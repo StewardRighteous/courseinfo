@@ -1,57 +1,52 @@
-const Header = (props) => {
-  return <h1>{props.headerName}</h1>;
-};
+const Header = ({ courseName }) => <h1>{courseName}</h1>;
 
-const Part = (props) => {
-  return (
-    <p>
-      {props.part} {props.exercise}
-    </p>
-  );
-};
+const Part = ({ name, exercises }) => (
+  <p>
+    {name} {exercises}
+  </p>
+);
 
-const Content = (props) => {
-  return (
-    <>
-      <Part part={props.parts[0].name} exercise={props.parts[0].exercises} />
-      <Part part={props.parts[1].name} exercise={props.parts[1].exercises} />
-      <Part part={props.parts[2].name} exercise={props.parts[2].exercises} />
-    </>
-  );
-};
+const Content = ({ parts }) => (
+  <div>
+    {parts.map((part) => (
+      <Part key={part.id} name={part.name} exercises={part.exercises} />
+    ))}
+  </div>
+);
 
-const Total = (props) => {
-  console.log(props);
-  let totalExercises = 0;
-  props.parts.forEach(
-    (part) => (totalExercises = totalExercises + part.exercises),
-  );
-  return <p>Number of Exercises {totalExercises}</p>;
-};
+const Total = (props) => <p>Number of exercises {props.total}</p>;
+
+const Course = ({ course }) => (
+  <div>
+    <Header courseName={course.name} />
+    <Content parts={course.parts} />
+  </div>
+);
 
 const App = () => {
   const course = {
-    name: "Half Stack Application Devlopment",
+    id: 1,
+    name: "Half Stack application development",
     parts: [
       {
         name: "Fundamentals of React",
         exercises: 10,
+        id: 1,
       },
       {
-        name: "Using Props to pass data",
+        name: "Using props to pass data",
         exercises: 7,
+        id: 2,
       },
-      { name: "State of a component", exercises: 14 },
+      {
+        name: "State of a component",
+        exercises: 14,
+        id: 3,
+      },
     ],
   };
 
-  return (
-    <div>
-      <Header headerName={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  );
+  return <Course course={course} />;
 };
 
 export default App;
